@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RYST — Stay, Studio &amp; Toys from Chennai</title>
+  <meta name="description" content="RYST is a family of Chennai brands: RYST 109A, a private beach villa on the ECR; Studio RYST, a content production studio in T-Nagar; and RYST Toys, wooden Montessori toys.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#f7f3ec">
+  <link rel="canonical" href="https://ryst.in/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RYST">
+  <meta property="og:url" content="https://ryst.in/">
+  <meta property="og:title" content="RYST — Stay, Studio &amp; Toys from Chennai">
+  <meta property="og:description" content="A private beach villa on the ECR, a content production studio in T-Nagar, and wooden Montessori toys.">
+  <meta property="og:image" content="https://ryst.in/assets/stay.jpg">
+  <meta property="og:locale" content="en_IN">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f7f3ec'/%3E%3Crect x='10' y='14' width='11' height='36' fill='%23f8a61f'/%3E%3Crect x='21' y='14' width='11' height='36' fill='%23c51228'/%3E%3Crect x='32' y='14' width='11' height='36' fill='%238cc63f'/%3E%3Crect x='43' y='14' width='11' height='36' fill='%230c8796'/%3E%3C/svg%3E">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://ryst.in/#website",
+        "url": "https://ryst.in/",
+        "name": "RYST",
+        "alternateName": "RYST Chennai",
+        "publisher": { "@id": "https://ryst.in/#organization" },
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://ryst.in/#organization",
+        "name": "RYST",
+        "url": "https://ryst.in/",
+        "subOrganization": [
+          { "@type": "LodgingBusiness", "name": "RYST 109A", "url": "https://stay.ryst.in/", "description": "Private beach villa with a swimming pool on the ECR, Pearl Beach, Cheyyur." },
+          { "@type": "LocalBusiness", "name": "Studio RYST", "url": "https://studio.ryst.in/", "description": "Podcast, photography and culinary content production studio in T-Nagar, Chennai." },
+          { "@type": "Store", "name": "RYST Toys", "url": "https://toys.ryst.in/", "description": "Premium wooden Montessori educational toys." }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #f7f3ec;
+      --card: #fffdf9;
+      --ink: #1c1a17;
+      --ink-soft: #57524a;
+      --line: rgba(28,26,23,.1);
+      --orange: #f8a61f;
+      --red: #c51228;
+      --lime: #8cc63f;
+      --teal: #0c8796;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #16150f; --card: #211f19; --ink: #f3efe6; --ink-soft: #b3ad9f; --line: rgba(243,239,230,.12); }
+      /* brighter text-only variants of the brand red/teal so small labels stay readable on dark */
+      :root .tagline em:nth-of-type(1), :root .brand.stay .kicker { color: #2bb3c3; }
+      :root .tagline em:nth-of-type(2), :root .brand.studio .kicker { color: #f0566a; }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.55; min-height: 100vh; display: flex; flex-direction: column;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+
+    header { text-align: center; padding: clamp(56px, 11vw, 120px) 24px clamp(36px, 6vw, 64px); }
+    .mark { display: inline-flex; gap: 4px; margin-bottom: 26px; line-height: 1; }
+    .mark span {
+      display: grid; place-items: center;
+      width: clamp(46px, 8vw, 68px); height: clamp(62px, 10.5vw, 90px);
+      color: #fff; font-weight: 900; font-size: clamp(34px, 6vw, 52px); letter-spacing: -1px;
+    }
+    .mark span:nth-child(1) { background: var(--orange); }
+    .mark span:nth-child(2) { background: var(--red); }
+    .mark span:nth-child(3) { background: var(--lime); }
+    .mark span:nth-child(4) { background: var(--teal); }
+    .tagline { font-size: clamp(20px, 3vw, 28px); font-weight: 700; letter-spacing: -.4px; }
+    .tagline em { font-style: normal; }
+    .tagline em:nth-of-type(1) { color: var(--teal); }
+    .tagline em:nth-of-type(2) { color: var(--red); }
+    .tagline em:nth-of-type(3) { color: var(--orange); }
+    .lead { max-width: 560px; margin: 14px auto 0; color: var(--ink-soft); font-size: 16px; }
+
+    main { flex: 1; width: min(1140px, 100%); margin: 0 auto; padding: 0 24px clamp(56px, 9vw, 100px); }
+    .brands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .brand {
+      display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line);
+      border-radius: 20px; overflow: hidden; text-decoration: none;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .brand:hover, .brand:focus-visible { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(28,26,23,.12); }
+    .brand:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+    .brand img { width: 100%; height: auto; aspect-ratio: 1.9 / 1; object-fit: cover; background: #ece6da; }
+    .brand-body { display: flex; flex-direction: column; flex: 1; padding: 22px 24px 24px; }
+    .kicker { font-size: 12px; font-weight: 700; letter-spacing: 2.2px; text-transform: uppercase; }
+    .brand.stay   .kicker { color: var(--teal); }
+    .brand.studio .kicker { color: var(--red); }
+    .brand.toys   .kicker { color: #c47d05; }
+    .brand h2 { font-size: 22px; letter-spacing: -.3px; margin: 6px 0 8px; }
+    .brand p { color: var(--ink-soft); font-size: 15px; flex: 1; }
+    .visit { margin-top: 18px; font-size: 14.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+    .visit::after { content: "→"; transition: transform .2s ease; }
+    .brand:hover .visit::after { transform: translateX(4px); }
+
+    footer { text-align: center; padding: 28px 24px 40px; color: var(--ink-soft); font-size: 13.5px; border-top: 1px solid var(--line); }
+    footer nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 10px; }
+    footer a { text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 880px) { .brands { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; } }
+    @media (prefers-reduced-motion: reduce) { .brand, .visit::after { transition: none; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1 class="mark"><span>R</span><span>Y</span><span>S</span><span>T</span></h1>
+  <p class="tagline"><em>Stay.</em> <em>Create.</em> <em>Play.</em></p>
+  <p class="lead">A small family of Chennai brands — a private beach villa on the ECR, a content production studio in T&#8209;Nagar, and wooden Montessori toys.</p>
+</header>
+
+<main>
+  <div class="brands">
+    <a class="brand stay" href="https://stay.ryst.in/">
+      <img src="/assets/stay.jpg" alt="RYST 109A private beach villa with swimming pool on the ECR" width="960" height="504">
+      <div class="brand-body">
+        <span class="kicker">Stay</span>
+        <h2>RYST 109A</h2>
+        <p>A private beach villa with its own pool and a 150-inch poolside screen on Pearl Beach, ECR — about two hours south of Chennai.</p>
+        <span class="visit">stay.ryst.in</span>
+      </div>
+    </a>
+
+    <a class="brand studio" href="https://studio.ryst.in/">
+      <img src="/assets/studio.jpg" alt="Studio RYST — Chennai's 3-in-1 content production studio" width="960" height="504" loading="lazy">
+      <div class="brand-body">
+        <span class="kicker">Create</span>
+        <h2>Studio RYST</h2>
+        <p>Chennai's 3-in-1 content studio in T&#8209;Nagar — podcast, photography and culinary sets, bookable by the hour with instant confirmation.</p>
+        <span class="visit">studio.ryst.in</span>
+      </div>
+    </a>
+
+    <a class="brand toys" href="https://toys.ryst.in/">
+      <img src="/assets/toys.jpg" alt="RYST Toys — wooden Montessori toys, learn as you play" width="960" height="480" loading="lazy">
+      <div class="brand-body">
+        <span class="kicker">Play</span>
+        <h2>RYST Toys</h2>
+        <p>Premium wooden Montessori toys and puzzles designed to spark creativity and make learning feel like play.</p>
+        <span class="visit">toys.ryst.in</span>
+      </div>
+    </a>
+  </div>
+</main>
+
+<footer>
+  <nav aria-label="RYST brands">
+    <a href="https://stay.ryst.in/">RYST 109A</a>
+    <a href="https://studio.ryst.in/">Studio RYST</a>
+    <a href="https://toys.ryst.in/">RYST Toys</a>
+  </nav>
+  <p>© 2026 RYST · Chennai, Tamil Nadu</p>
+</footer>
+
+</body>
+</html>
