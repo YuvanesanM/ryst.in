@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RYST — Stay, Studio &amp; Toys from Chennai</title>
-  <meta name="description" content="RYST is a family of Chennai brands: RYST 109A, a private beach villa on the ECR; Studio RYST, a content production studio in T-Nagar; and RYST Toys, wooden Montessori toys.">
+  <title>RYST — Stay, Studio, Toys &amp; Harbour from Chennai</title>
+  <meta name="description" content="RYST is a family of Chennai brands: RYST 109A, a private beach villa on the ECR; Studio RYST, a content production studio in T-Nagar; RYST Toys, wooden Montessori toys; and RYST Harbour, software that runs independent villas.">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#f7f3ec">
   <link rel="canonical" href="https://ryst.in/">
@@ -12,8 +12,8 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="RYST">
   <meta property="og:url" content="https://ryst.in/">
-  <meta property="og:title" content="RYST — Stay, Studio &amp; Toys from Chennai">
-  <meta property="og:description" content="A private beach villa on the ECR, a content production studio in T-Nagar, and wooden Montessori toys.">
+  <meta property="og:title" content="RYST — Stay, Studio, Toys &amp; Harbour from Chennai">
+  <meta property="og:description" content="A private beach villa on the ECR, a content production studio in T-Nagar, wooden Montessori toys, and software that runs independent villas.">
   <meta property="og:image" content="https://ryst.in/assets/stay.jpg">
   <meta property="og:locale" content="en_IN">
   <meta name="twitter:card" content="summary_large_image">
@@ -41,7 +41,8 @@
         "subOrganization": [
           { "@type": "LodgingBusiness", "name": "RYST 109A", "url": "https://stay.ryst.in/", "description": "Private beach villa with a swimming pool on the ECR, Pearl Beach, Cheyyur." },
           { "@type": "LocalBusiness", "name": "Studio RYST", "url": "https://studio.ryst.in/", "description": "Podcast, photography and culinary content production studio in T-Nagar, Chennai." },
-          { "@type": "Store", "name": "RYST Toys", "url": "https://toys.ryst.in/", "description": "Premium wooden Montessori educational toys." }
+          { "@type": "Store", "name": "RYST Toys", "url": "https://toys.ryst.in/", "description": "Premium wooden Montessori educational toys." },
+          { "@type": "Organization", "name": "RYST Harbour", "url": "https://harbour.ryst.in/", "description": "Property management software for independent villas: bookings, OTA calendar sync, guests, staff and payments." }
         ]
       }
     ]
@@ -65,6 +66,7 @@
       /* brighter text-only variants of the brand red/teal so small labels stay readable on dark */
       :root .tagline em:nth-of-type(1), :root .brand.stay .kicker { color: #2bb3c3; }
       :root .tagline em:nth-of-type(2), :root .brand.studio .kicker { color: #f0566a; }
+      :root .tagline em:nth-of-type(4), :root .brand.harbour .kicker { color: var(--lime); }
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { -webkit-text-size-adjust: 100%; }
@@ -92,10 +94,11 @@
     .tagline em:nth-of-type(1) { color: var(--teal); }
     .tagline em:nth-of-type(2) { color: var(--red); }
     .tagline em:nth-of-type(3) { color: var(--orange); }
+    .tagline em:nth-of-type(4) { color: #5f9425; }
     .lead { max-width: 560px; margin: 14px auto 0; color: var(--ink-soft); font-size: 16px; }
 
-    main { flex: 1; width: min(1140px, 100%); margin: 0 auto; padding: 0 24px clamp(56px, 9vw, 100px); }
-    .brands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    main { flex: 1; width: min(1000px, 100%); margin: 0 auto; padding: 0 24px clamp(56px, 9vw, 100px); }
+    .brands { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
     .brand {
       display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line);
       border-radius: 20px; overflow: hidden; text-decoration: none;
@@ -109,6 +112,7 @@
     .brand.stay   .kicker { color: var(--teal); }
     .brand.studio .kicker { color: var(--red); }
     .brand.toys   .kicker { color: #c47d05; }
+    .brand.harbour .kicker { color: #4a7516; }
     .brand h2 { font-size: 22px; letter-spacing: -.3px; margin: 6px 0 8px; }
     .brand p { color: var(--ink-soft); font-size: 15px; flex: 1; }
     .visit { margin-top: 18px; font-size: 14.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
@@ -128,8 +132,8 @@
 
 <header>
   <h1 class="mark"><span>R</span><span>Y</span><span>S</span><span>T</span></h1>
-  <p class="tagline"><em>Stay.</em> <em>Create.</em> <em>Play.</em></p>
-  <p class="lead">A small family of Chennai brands — a private beach villa on the ECR, a content production studio in T&#8209;Nagar, and wooden Montessori toys.</p>
+  <p class="tagline"><em>Stay.</em> <em>Create.</em> <em>Play.</em> <em>Manage.</em></p>
+  <p class="lead">A small family of Chennai brands — a private beach villa on the ECR, a content production studio in T&#8209;Nagar, wooden Montessori toys, and the software that runs our villa.</p>
 </header>
 
 <main>
@@ -163,6 +167,16 @@
         <span class="visit">toys.ryst.in</span>
       </div>
     </a>
+
+    <a class="brand harbour" href="https://harbour.ryst.in/">
+      <img src="/assets/harbour.jpg" alt="RYST Harbour — run your villa like a premium hotel" width="960" height="504" loading="lazy">
+      <div class="brand-body">
+        <span class="kicker">Manage</span>
+        <h2>RYST Harbour</h2>
+        <p>Property management for independent villas — bookings and OTA calendar sync, guest messages, staff, GST invoices and payments in one app. Built at RYST 109A.</p>
+        <span class="visit">harbour.ryst.in</span>
+      </div>
+    </a>
   </div>
 </main>
 
@@ -171,6 +185,7 @@
     <a href="https://stay.ryst.in/">RYST 109A</a>
     <a href="https://studio.ryst.in/">Studio RYST</a>
     <a href="https://toys.ryst.in/">RYST Toys</a>
+    <a href="https://harbour.ryst.in/">RYST Harbour</a>
   </nav>
   <p>© 2026 RYST · Chennai, Tamil Nadu</p>
 </footer>
