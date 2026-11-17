@@ -14,8 +14,8 @@ It's a fast static site: plain HTML, CSS and JavaScript with no framework, datab
 | `/works/` | Portfolio with filters |
 | `/works/<project>/` | One page per project, with a photo gallery and lightbox |
 | `/contact-us/` | Address, phone, email, map, enquiry form |
-| `/dream-builder/` | Step-by-step design questionnaire |
-| `/terms-conditions/`, `/home/privacy-policy/`, `/cookie-policy/`, `/return-and-cancellation/` | Policies |
+| `/start-a-project/` | Step-by-step project brief (scope, site, budget, timeline) |
+| `/terms-conditions/`, `/home/privacy-policy/`, `/cookie-policy/` | Policies |
 
 The old WordPress URLs are kept, so existing links and Google results still work.
 
@@ -55,5 +55,5 @@ Commit and push to `main`. GitHub Pages republishes within a minute or two.
 ## Privacy & compliance
 
 - No cookies, analytics or trackers. Fonts are self-hosted, and the Google Map loads only when a visitor clicks it.
-- Policies (Terms, Privacy, Cookies, Returns) are in `_build/legal/`. They reference the DPDP Act 2023, the IT Act 2000 and the Consumer Protection Act 2019. When you change one, update `POLICY_DATE` in `_build/build.py`.
+- Policies (Terms, Privacy, Cookies) are in `_build/legal/`. They reference the DPDP Act 2023, the IT Act 2000 and the Consumer Protection Act 2019. When you change one, update `POLICY_DATE` in `_build/build.py`.
 - If you ever add analytics or ads, update the Cookie Policy and add a consent banner first.

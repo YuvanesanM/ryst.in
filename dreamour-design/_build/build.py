@@ -58,7 +58,16 @@ def pic(name, alt, sizes="100vw", cls="", eager=False, attrs=""):
 def full(name):  # largest webp for lightbox
     return f"/{IMG}/{name}-{sizes_for(name)[-1]}.webp"
 
-def og(name): return f"{SITE}/{IMG}/{name}-1600.jpg"
+OG_DIR = "assets/img/og"
+def og(name):
+    """1200x630 social share crop, generated on first use."""
+    path = f"{OG_DIR}/{name}.jpg"
+    if not os.path.exists(path):
+        from PIL import Image, ImageOps
+        os.makedirs(OG_DIR, exist_ok=True)
+        with Image.open(f"{IMG}/{name}-1600.jpg") as im:
+            ImageOps.fit(im.convert("RGB"), (1200, 630), Image.LANCZOS, centering=(0.5, 0.45)).save(path, quality=82, optimize=True, progressive=True)
+    return f"{SITE}/{path}"
 
 # ------------------------------------------------------------------ content
 SERVICES = [
@@ -82,6 +91,11 @@ SERVICES = [
       body="We can design and customize all possible furniture that comes under our scope of design as per the client's need and taste. We also offer furniture design solutions and work closely with our team of carpenters to make the product as exclusive as possible. We also design furniture for some of the leading furniture stores.",
       points=["Bespoke furniture", "Made with our carpenters", "Kitchens & storage", "Design for furniture stores"],
       projects=["cluster-house"]),
+ dict(id="construction", no="05", name="Construction & Execution", img="ryst-day-back",
+      short="Design and build under one roof: we take your project from drawings to handover.",
+      body="We take projects from drawings to a finished building. Our team manages construction on site, coordinating trusted contractors, carpenters and vendors, and keeping quality, cost and schedule on track, so what gets built matches what was designed. Choose turnkey design-and-build with one team accountable from start to finish, or engage us to execute an approved design.",
+      points=["Turnkey design & build", "Project & site management", "Contractor, carpenter & vendor coordination", "Quality, cost & schedule control"],
+      projects=[]),
 ]
 
 PROJECTS = [
@@ -152,18 +166,17 @@ ORG = {
      "inLanguage": "en-IN", "publisher": {"@id": f"{SITE}/#business"}},
     {"@type": ["ProfessionalService", "HomeAndConstructionBusiness"], "@id": f"{SITE}/#business",
      "name": BRAND, "legalName": "Dreamour Multiventures", "slogan": "Your Dream Our Design",
-     "description": "Architecture, interior, landscape and furniture design studio in Chennai. Dreamour Multiventures was registered in 2023 by architect Ramyaa Yuvanesan, whose practice dates back to 2015.",
+     "description": "Architecture, interior design, landscape, furniture design and construction company in Chennai, designing and building homes, interiors and landscapes across Tamil Nadu.",
      "url": f"{SITE}/", "logo": f"{SITE}/assets/img/logo-dd.png", "image": og("ryst-night-front"),
      "telephone": PHONE_TEL, "email": EMAIL, "priceRange": "₹₹",
-     "foundingDate": "2023", "founder": {"@id": f"{SITE}/#architect"},
+     "foundingDate": "2023",
      "address": {"@type": "PostalAddress", "streetAddress": STREET, "addressLocality": CITY,
                  "postalCode": PIN, "addressRegion": "Tamil Nadu", "addressCountry": "IN"},
      "areaServed": [{"@type": "City", "name": "Chennai"}, {"@type": "State", "name": "Tamil Nadu"}],
-     "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Design services", "itemListElement": [
+     "knowsAbout": ["Architecture", "Interior design", "Landscape design", "Furniture design", "Construction", "Turnkey design and build", "Project management"],
+     "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Design and build services", "itemListElement": [
         {"@type": "Offer", "itemOffered": {"@type": "Service", "name": s["name"], "description": s["short"]}} for s in SERVICES]},
-     "sameAs": [IG, FB]},
-    {"@type": "Person", "@id": f"{SITE}/#architect", "name": "Ramyaa Yuvanesan", "jobTitle": "Architect",
-     "worksFor": {"@id": f"{SITE}/#business"}, "url": f"{SITE}/about/"}
+     "sameAs": [IG, FB]}
   ]}
 
 def ld(obj): return f'\n  <script type="application/ld+json">{json.dumps(obj, ensure_ascii=False)}</script>'
@@ -201,6 +214,8 @@ def layout(path, title, desc, body, image="ryst-night-front", active="", schema=
   <meta name="robots" content="{robots}">
   <link rel="canonical" href="{canon}">
   <meta name="theme-color" content="#141216">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="format-detection" content="telephone=no">
   <meta name="geo.region" content="IN-TN">
   <meta name="geo.placename" content="Chennai">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -213,7 +228,9 @@ def layout(path, title, desc, body, image="ryst-night-front", active="", schema=
   <meta property="og:title" content="{esc(title)}">
   <meta property="og:description" content="{esc(desc)}">
   <meta property="og:image" content="{og(image)}">
-  <meta property="og:image:width" content="1600">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{esc(title)}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{esc(title)}">
   <meta name="twitter:description" content="{esc(desc)}">
@@ -229,13 +246,13 @@ def layout(path, title, desc, body, image="ryst-night-front", active="", schema=
   <div class="wrap hdr-in">
     <a class="logo" href="/" aria-label="{BRAND}, home">{LOGO}<span>Dreamour<em>Design</em></span></a>
     <nav class="nav" aria-label="Main">{nav}</nav>
-    <a class="btn btn-pill hdr-cta" href="/dream-builder/">Dream Builder</a>
+    <a class="btn btn-pill hdr-cta" href="/start-a-project/">Start a project</a>
     <button class="burger" aria-expanded="false" aria-controls="overlay" aria-label="Open menu"><span></span><span></span></button>
   </div>
 </header>
 <div class="overlay" id="overlay" hidden>
   <nav class="ov-nav" aria-label="Mobile">
-    <a href="/">Home</a>{"".join(f'<a href="{h}">{t}</a>' for h, t in NAV)}<a href="/dream-builder/">Dream Builder</a>
+    <a href="/">Home</a>{"".join(f'<a href="{h}">{t}</a>' for h, t in NAV)}<a href="/start-a-project/">Start a project</a>
   </nav>
   <div class="ov-foot">
     <a href="tel:{PHONE_TEL}">{PHONE}</a>
@@ -259,7 +276,7 @@ def layout(path, title, desc, body, image="ryst-night-front", active="", schema=
     <div class="ftr-grid">
       <div>
         <a class="logo" href="/">{LOGO}<span>Dreamour<em>Design</em></span></a>
-        <p class="ftr-tag">Architecture, interiors, landscape and furniture design. Founded by architect Ramyaa Yuvanesan in Chennai.</p>
+        <p class="ftr-tag">Architecture, interiors, landscape, furniture and construction: design and build under one roof. A Dreamour Multiventures company, Chennai.</p>
       </div>
       <div>
         <h2 class="ftr-h">Studio</h2>
@@ -268,7 +285,7 @@ def layout(path, title, desc, body, image="ryst-night-front", active="", schema=
       </div>
       <div>
         <h2 class="ftr-h">Explore</h2>
-        <ul class="ftr-nav"><li><a href="/about/">Studio</a></li><li><a href="/services/">Services</a></li><li><a href="/works/">Works</a></li><li><a href="/dream-builder/">Dream Builder</a></li><li><a href="/contact-us/">Contact</a></li></ul>
+        <ul class="ftr-nav"><li><a href="/about/">Studio</a></li><li><a href="/services/">Services</a></li><li><a href="/works/">Works</a></li><li><a href="/start-a-project/">Start a project</a></li><li><a href="/contact-us/">Contact</a></li></ul>
       </div>
       <div>
         <h2 class="ftr-h">Follow</h2>
@@ -277,11 +294,11 @@ def layout(path, title, desc, body, image="ryst-night-front", active="", schema=
     </div>
     <div class="ftr-bottom">
       <p>© <span class="yr">{date.today().year}</span> Dreamour Multiventures. All rights reserved.</p>
-      <nav aria-label="Legal"><a href="/terms-conditions/">Terms</a><a href="/home/privacy-policy/">Privacy</a><a href="/cookie-policy/">Cookies</a><a href="/return-and-cancellation/">Returns &amp; Cancellation</a></nav>
+      <nav aria-label="Legal"><a href="/terms-conditions/">Terms</a><a href="/home/privacy-policy/">Privacy</a><a href="/cookie-policy/">Cookies</a></nav>
     </div>
   </div>
 </footer>
-<a class="wa-fab" href="https://wa.me/{WA}" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">{I['wa']}</a>
+<aside aria-label="Quick contact"><a class="wa-fab" href="https://wa.me/{WA}" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">{I['wa']}</a></aside>
 <script src="/assets/js/site.js?v={TODAY}" defer></script>
 </body>
 </html>
@@ -312,10 +329,10 @@ def cta_band(img="statue-night"):
     return f"""<section class="band band-cta">
   <div class="band-media" data-parallax="0.3">{pic(img, "", attrs=' aria-hidden="true"')}</div>
   <div class="wrap band-in center">
-    <p class="kicker light">Dream Builder</p>
+    <p class="kicker light">Start a project</p>
     <h2 class="display light">Give life to <em>your dream</em></h2>
-    <p class="band-lead">Take our 2-minute questionnaire, structured to understand your unique taste and design preferences.</p>
-    <a class="btn btn-light" href="/dream-builder/">Get started {I['arrow']}</a>
+    <p class="band-lead">Tell us about your site, scope and budget in a 2-minute brief, and our team will get back to you to plan the next step.</p>
+    <a class="btn btn-light" href="/start-a-project/">Start your brief {I['arrow']}</a>
   </div>
 </section>"""
 
@@ -338,7 +355,7 @@ for i, slug in enumerate(feat):
     <article class="feat{' feat-rev' if i % 2 else ''}">
       <a class="feat-media" href="/works/{slug}/" tabindex="-1" aria-hidden="true"><div data-parallax="0.12">{pic(p['hero'], '', sizes='(max-width: 900px) 100vw, 62vw')}</div></a>
       <div class="feat-card reveal">
-        <p class="feat-no">0{i+1}</p>
+        <p class="feat-no" data-n="0{i+1}" aria-hidden="true"></p>
         <p class="kicker">{CATS[p['cat']]} · {p['year']}</p>
         <h3 class="display-sm"><a href="/works/{slug}/">{esc(p['name'])}</a></h3>
         <p class="feat-loc">{esc(p['loc'])} · {p['area']}</p>
@@ -358,12 +375,12 @@ svc_rows = "".join(f"""
 home = f"""<section class="hero">
   <div class="hero-media" data-hero>{pic('ryst-night-front', 'RYST House, a beach house in Cheyyur designed by Dreamour Design, lit up at night', eager=True)}</div>
   <div class="wrap hero-in">
-    <p class="kicker light hero-k">Architecture · Interiors · Landscape — Chennai</p>
+    <p class="kicker light hero-k">Architecture · Interiors · Construction — Chennai</p>
     <h1 class="hero-title tsplit">Your dream,<br><em>our design.</em></h1>
-    <p class="hero-lead">An architecture and interior design studio founded by architect Ramyaa Yuvanesan, creating homes, interiors and landscapes across Tamil Nadu.</p>
+    <p class="hero-lead">An architecture, interior design and construction company. We design and build homes, interiors and landscapes across Tamil Nadu, from the first sketch to the final handover.</p>
     <div class="hero-ctas">
       <a class="btn btn-light" href="/works/">Explore our works {I['arrow']}</a>
-      <a class="btn btn-ghost" href="/dream-builder/">Start your Dream Builder</a>
+      <a class="btn btn-ghost" href="/start-a-project/">Start a project</a>
     </div>
   </div>
   <div class="wrap hero-foot">
@@ -379,7 +396,7 @@ home = f"""<section class="hero">
 <section class="sec">
   <div class="wrap intro">
     <p class="kicker">The studio</p>
-    <p class="statement fill-text">Where creativity meets functionality. We craft spaces that are both beautiful and functional, with smart, sustainable design that brings together light, space, nature, colour and materials.</p>
+    <p class="statement fill-text">Where creativity meets functionality. We design and build spaces that are both beautiful and functional, with smart, sustainable design that brings together light, space, nature, colour and materials.</p>
     <div class="intro-foot">
       {STATS}
       <a class="btn btn-dark" href="/about/">About the studio {I['arrow']}</a>
@@ -391,7 +408,7 @@ home = f"""<section class="hero">
   <div class="wrap">
     <div class="sec-head">
       <p class="kicker light">What we do</p>
-      <h2 class="display light">Four disciplines, <em>one vision</em></h2>
+      <h2 class="display light">Design to handover, <em>one team</em></h2>
     </div>
     <div class="svc-list">{svc_rows}
     </div>
@@ -424,21 +441,22 @@ home = f"""<section class="hero">
   <div class="wrap">
     <div class="sec-head center">
       <p class="kicker">How we work</p>
-      <h2 class="display">From a dream <em>to drawings</em></h2>
+      <h2 class="display">From a dream <em>to the keys</em></h2>
     </div>
     <ol class="process">
-      <li class="reveal"><span>01</span><h3>Dream Builder</h3><p>Share your taste in our 2-minute questionnaire: what you're building, the style you love and how you balance function with aesthetics.</p></li>
+      <li class="reveal"><span>01</span><h3>Brief</h3><p>Share your site, scope, budget and timeline in our 2-minute project brief, then meet our team.</p></li>
       <li class="reveal"><span>02</span><h3>Concept</h3><p>Site-sensitive conceptual and schematic design, shaped around your brief and the character of your plot.</p></li>
-      <li class="reveal"><span>03</span><h3>Design development</h3><p>Detailed design, visualisations and complete construction drawings, so you see it before it's built.</p></li>
-      <li class="reveal"><span>04</span><h3>Build support</h3><p>We assist with contractor bidding and negotiation, and work with our carpenters on bespoke furniture.</p></li>
+      <li class="reveal"><span>03</span><h3>Design &amp; drawings</h3><p>Detailed design, 3D visualisation and complete construction drawings, so you see it before it's built.</p></li>
+      <li class="reveal"><span>04</span><h3>Construction</h3><p>Our team executes on site, coordinating contractors, carpenters and vendors and tracking quality, cost and schedule.</p></li>
+      <li class="reveal"><span>05</span><h3>Handover</h3><p>Finishes checked against the design, and the completed space handed over, ready to live or work in.</p></li>
     </ol>
   </div>
 </section>
 
 {cta_band()}
 """
-write("/", layout("/", "Architects & Interior Designers in Chennai | Dreamour Design",
-     "Chennai architecture, interior and landscape design studio founded by architect Ramyaa Yuvanesan. Homes, interiors and landscapes across Tamil Nadu.",
+write("/", layout("/", "Architects, Interiors & Construction in Chennai | Dreamour",
+     "Dreamour Design is an architecture, interior design and construction company in Chennai, designing and building homes, interiors and landscapes across Tamil Nadu.",
      home, active="", schema=ld(ORG), preload="ryst-night-front"))
 
 # ================================================================== ABOUT
@@ -459,7 +477,7 @@ about = f"""{page_hero("The <em>studio</em>", "About Dreamour", "rasi-night", "R
       <li><span>2015</span><p>First built works by architect Ramyaa Yuvanesan: H-House and the Tuticorin statue landscape.</p></li>
       <li><span>2015–22</span><p>Homes, apartments, interiors, a community hall and public landscapes across Chennai and Tamil Nadu.</p></li>
       <li><span>2023</span><p>The practice is registered as Dreamour Multiventures.</p></li>
-      <li><span>Today</span><p>Architecture, interiors, landscape and product design, alongside premium cookware and RYST Toys.</p></li>
+      <li><span>Today</span><p>Design and build: architecture, interiors, landscape, furniture and construction, alongside premium cookware and RYST Toys.</p></li>
     </ol>
     {STATS}
   </div>
@@ -475,8 +493,8 @@ about = f"""{page_hero("The <em>studio</em>", "About Dreamour", "rasi-night", "R
     <div class="ventures">
       <article class="venture reveal">
         <div class="venture-mark v-dd">{LOGO}</div>
-        <h3>Architectural solutions</h3>
-        <p>Architecture, interior design and landscape services that transform spaces, from homes and apartments to campuses and public landscapes.</p>
+        <h3>Design &amp; build</h3>
+        <p>Architecture, interiors, landscape and construction that transform spaces, from homes and apartments to campuses and public landscapes.</p>
         <a class="u-link" href="/services/">Our services {I['arrow']}</a>
       </article>
       <article class="venture reveal">
@@ -502,27 +520,27 @@ about = f"""{page_hero("The <em>studio</em>", "About Dreamour", "rasi-night", "R
 </section>
 {cta_band("hall-front")}
 """
-write("/about/", layout("/about/", "About Architect Ramyaa Yuvanesan & Studio | Dreamour Design",
-     "Founded by architect Ramyaa Yuvanesan in Chennai: architecture, interiors and landscape, plus premium cookware and RYST wooden educational toys.",
+write("/about/", layout("/about/", "About Dreamour – Architecture & Construction, Chennai",
+     "Dreamour Multiventures, registered in 2023, brings architecture, interiors, landscape and construction together, alongside premium cookware and RYST toys.",
      about, image="rasi-night", active="/about/", schema=crumbs_ld([("Home", "/"), ("Studio", "/about/")]), preload="rasi-night"))
 
 # ================================================================== SERVICES
 svc_sections = ""
 for i, s in enumerate(SERVICES):
-    rel = "".join(f'<a href="/works/{slug}/">{esc(P[slug]["name"])}</a>' for slug in s["projects"])
+    rel = "".join(f'<a href="/works/{slug}/">{esc(P[slug]["name"])}</a>' for slug in s["projects"]) or '<a href="/start-a-project/">Start your project brief</a>'
     svc_sections += f"""
   <article class="svc-block{' rev' if i % 2 else ''}" id="{s['id']}">
     <div class="svc-media"><div data-parallax="0.1">{pic(s['img'], s['name'] + ' by Dreamour Design', sizes='(max-width: 900px) 100vw, 55vw')}</div></div>
     <div class="svc-text reveal">
-      <p class="svc-big-no">{s['no']}</p>
+      <p class="svc-big-no" data-n="{s['no']}" aria-hidden="true"></p>
       <h2 class="display-sm">{s['name']}</h2>
       <p>{s['body']}</p>
       <ul class="ticks">{''.join(f'<li>{x}</li>' for x in s['points'])}</ul>
-      <p class="rel"><span>Related work</span>{rel}</p>
+      <p class="rel"><span>{'Related work' if s['projects'] else 'Next step'}</span>{rel}</p>
     </div>
   </article>"""
 services = f"""{page_hero("Our <em>services</em>", "What we do", "round-overview", "Roundabout landscape design in Egmore, Chennai",
-   "From the first sketch to the last piece of furniture.", crumbs=[("Services", "/services/")])}
+   "From the first sketch to the final handover.", crumbs=[("Services", "/services/")])}
 <nav class="subnav" aria-label="Services"><div class="wrap">{''.join(f'<a href="#{s["id"]}">{s["name"]}</a>' for s in SERVICES)}</div></nav>
 <section class="sec svc-page"><div class="wrap">{svc_sections}
 </div></section>
@@ -531,21 +549,22 @@ services = f"""{page_hero("Our <em>services</em>", "What we do", "round-overview
 svc_ld = {"@context": "https://schema.org", "@graph": [
     {"@type": "Service", "name": s["name"], "description": s["body"], "serviceType": s["name"],
      "provider": {"@id": f"{SITE}/#business"}, "areaServed": "Tamil Nadu", "url": f"{SITE}/services/#{s['id']}"} for s in SERVICES]}
-write("/services/", layout("/services/", "Architecture & Interior Design Services, Chennai | Dreamour",
-     "Architecture, interior, landscape and bespoke furniture design in Chennai: concept design, construction drawings, visualisation and contractor support.",
+write("/services/", layout("/services/", "Architecture, Interior & Construction Services | Dreamour",
+     "Architecture, interior, landscape and furniture design, plus construction and turnkey execution in Chennai: from concept and drawings to on-site delivery.",
      services, image="round-overview", active="/services/", schema=crumbs_ld([("Home", "/"), ("Services", "/services/")]) + ld(svc_ld), preload="round-overview"))
 
 # ================================================================== WORKS
 counts = {c: sum(1 for p in PROJECTS if p["cat"] == c) for c in CATS}
 works = f"""{page_hero("Our <em>works</em>", "Portfolio", "mass-farm", "Landscape design for a 20-acre estate in Gummidipoondi",
-   "Homes, interiors and landscapes across Chennai and Tamil Nadu, designed by architect Ramyaa Yuvanesan.", crumbs=[("Works", "/works/")])}
+   "Homes, interiors and landscapes across Chennai and Tamil Nadu.", crumbs=[("Works", "/works/")])}
 <section class="sec">
   <div class="wrap">
     <div class="filters" role="group" aria-label="Filter projects">
       <button class="chip on" data-f="all" aria-pressed="true">All <sup>{len(PROJECTS)}</sup></button>
       {''.join(f'<button class="chip" data-f="{c}" aria-pressed="false">{n} <sup>{counts[c]}</sup></button>' for c, n in CATS.items())}
     </div>
-    <p class="credit-note">Projects completed before 2023 were designed by architect Ramyaa Yuvanesan, before her practice was registered as Dreamour Multiventures.</p>
+    <p class="credit-note">Projects completed before 2023 were designed by our founding architect, before the practice was registered as Dreamour Multiventures.</p>
+    <h2 class="sr-only">All projects</h2>
     <div class="pgrid">{''.join(proj_card(p, i) for i, p in enumerate(PROJECTS))}</div>
   </div>
 </section>
@@ -572,7 +591,7 @@ for idx, p in enumerate(PROJECTS):
       <div><dt>Location</dt><dd>{esc(p['loc'])}</dd></div>
       <div><dt>Area</dt><dd>{p['area']}</dd></div>
       <div><dt>Year</dt><dd>{p['year']}</dd></div>
-      <div><dt>Architect</dt><dd>Ramyaa Yuvanesan</dd></div>
+      <div><dt>Scope</dt><dd>{CATS[p['cat']]} design</dd></div>
     </dl>
     <div class="proj-intro">
       <p class="lead-serif reveal">{esc(p['desc'])}</p>
@@ -597,7 +616,7 @@ for idx, p in enumerate(PROJECTS):
 """
     cw = {"@context": "https://schema.org", "@type": "CreativeWork", "name": p["name"], "description": p["desc"],
           "genre": CATS[p["cat"]], "dateCreated": p["year"], "url": f"{SITE}/works/{p['slug']}/",
-          "image": [og(n) for n, _ in p["gallery"]], "creator": {"@id": f"{SITE}/#architect"},
+          "image": [og(n) for n, _ in p["gallery"]], "creator": {"@id": f"{SITE}/#business"},
           "locationCreated": {"@type": "Place", "name": p["loc"]}}
     write(f"/works/{p['slug']}/", layout(f"/works/{p['slug']}/",
         f"{p['name']}, {p['loc'].split(',')[0]} | Dreamour Design",
@@ -623,7 +642,7 @@ contact = f"""{page_hero("Let's <em>talk</em>", "Contact", "h-house", "H-House r
         <div class="field"><input id="cf-phone" name="Phone" type="tel" inputmode="tel" autocomplete="tel" placeholder=" " required><label for="cf-phone">Phone *</label></div>
       </div>
       <div class="field"><input id="cf-email" name="Email" type="email" autocomplete="email" placeholder=" "><label for="cf-email">Email</label></div>
-      <div class="field"><select id="cf-type" name="Interested in"><option>Architecture design</option><option>Interior design</option><option>Landscape design</option><option>Product / furniture design</option><option>Something else</option></select><label for="cf-type" class="static">Interested in</label></div>
+      <div class="field"><select id="cf-type" name="Interested in"><option>Architecture design</option><option>Interior design</option><option>Landscape design</option><option>Product / furniture design</option><option>Construction &amp; execution</option><option>Turnkey design &amp; build</option><option>Something else</option></select><label for="cf-type" class="static">Interested in</label></div>
       <div class="field"><textarea id="cf-msg" name="Message" rows="4" placeholder=" " required></textarea><label for="cf-msg">Tell us about your project *</label></div>
       <div class="f-send">
         <button class="btn btn-dark" type="submit" value="whatsapp">{I['wa']} Send on WhatsApp</button>
@@ -651,40 +670,40 @@ write("/contact-us/", layout("/contact-us/", "Contact Dreamour Design – Archit
      contact, image="h-house", active="/contact-us/", preload="h-house",
      schema=crumbs_ld([("Home", "/"), ("Contact", "/contact-us/")]) + ld(contact_ld)))
 
-# ================================================================== DREAM BUILDER
-def chips(name, opts, kind="radio", img=False):
-    out = ""
-    for o in opts:
-        im = f'<img src="/assets/img/shape-{o.lower()}.jpg" alt="" width="120" height="120" loading="lazy">' if img else ""
-        out += f'<label class="opt{" opt-img" if img else ""}"><input type="{kind}" name="{name}" value="{o}">{im}<span>{o}</span></label>'
-    return out
+# ================================================================== START A PROJECT (project brief)
+def chips(name, opts, kind="radio"):
+    return "".join(f'<label class="opt"><input type="{kind}" name="{name}" value="{esc(o)}"><span>{esc(o)}</span></label>' for o in opts)
 
 STEPS = [
  ("About you", f"""<div class="f-row">
-    <div class="field"><input id="db-name" name="Name" autocomplete="name" placeholder=" " required><label for="db-name">Your name *</label></div>
-    <div class="field"><input id="db-phone" name="Phone" type="tel" inputmode="tel" autocomplete="tel" placeholder=" " required><label for="db-phone">Phone *</label></div>
+    <div class="field"><input id="pb-name" name="Name" autocomplete="name" placeholder=" " required><label for="pb-name">Your name *</label></div>
+    <div class="field"><input id="pb-phone" name="Phone" type="tel" inputmode="tel" autocomplete="tel" placeholder=" " required><label for="pb-phone">Phone *</label></div>
   </div>
-  <div class="field"><input id="db-email" name="Email" type="email" autocomplete="email" placeholder=" " required><label for="db-email">Email *</label></div>
-  <p class="hint">We'll use these only to follow up on your dream.</p>""", ["Name", "Phone", "Email"]),
- ("I am building a…", f'<div class="opts big" data-req="Building">{chips("Building", ["Dream house", "Work space", "Other"])}</div>', ["Building"]),
- ("Design requirement", f'<p class="hint">Choose all that apply.</p><div class="opts big" data-req="Requirement">{chips("Requirement", ["Layout", "Interiors", "Landscape", "Product"], "checkbox")}</div>', ["Requirement"]),
- ("I want my dream building to be…", f'<div class="opts big" data-req="Style">{chips("Style", ["Lavish", "Compact", "Ergonomic"])}</div>', ["Style"]),
- ("What's your preferred shape?", f'<div class="opts" data-req="Shape">{chips("Shape", ["Circular", "Squarish", "Pointed"], img=True)}</div>', ["Shape"]),
- ("Function vs aesthetics", """<p class="hint">Slide your balance between design functionality and aesthetics.</p>
-  <div class="range"><span>Function</span><input type="range" name="Balance" min="-5" max="5" step="1" value="0" aria-label="Balance between function (−5) and aesthetics (5)"><span>Aesthetics</span></div>
-  <p class="range-out">Selected value <output>0</output></p>""", []),
- ("Anything else?", '<div class="field"><textarea id="db-other" name="Other preferences" rows="5" placeholder=" "></textarea><label for="db-other">Location, plot size, budget, timeline, styles you love…</label></div>', []),
+  <div class="field"><input id="pb-email" name="Email" type="email" autocomplete="email" placeholder=" " required><label for="pb-email">Email *</label></div>""", ["Name", "Phone", "Email"]),
+ ("What are you planning?", f'<div class="opts big">{chips("Project type", ["Independent house / villa", "Apartment", "Interiors only", "Office / commercial", "Institutional / community", "Landscape", "Other"])}</div>', ["Project type"]),
+ ("What do you need from us?", f'<p class="hint">Choose all that apply.</p><div class="opts big">{chips("Scope", ["Architecture design", "Interior design", "Landscape design", "Furniture design", "Construction & execution", "Turnkey design & build"], "checkbox")}</div>', ["Scope"]),
+ ("Tell us about the site", f"""<div class="f-row">
+    <div class="field"><input id="pb-loc" name="Project location" autocomplete="address-level2" placeholder=" " required><label for="pb-loc">Project location *</label></div>
+    <div class="field"><input id="pb-size" name="Plot / built-up area" placeholder=" "><label for="pb-size">Plot or built-up area (e.g. 2,400 sq ft)</label></div>
+  </div>
+  <p class="hint">Site status</p>
+  <div class="opts">{chips("Site status", ["Own the plot", "Existing building to renovate", "Still looking for a site"])}</div>""", ["Project location", "Site status"]),
+ ("Budget and timeline", f"""<p class="hint">Approximate budget</p>
+  <div class="opts">{chips("Budget", ["Under ₹25 lakh", "₹25–50 lakh", "₹50 lakh – ₹1 crore", "Above ₹1 crore", "Not sure yet"])}</div>
+  <p class="hint">When would you like to start?</p>
+  <div class="opts">{chips("Start", ["Within 3 months", "3–6 months", "6–12 months", "Just exploring"])}</div>""", ["Budget", "Start"]),
+ ("Anything else?", '<div class="field"><textarea id="pb-notes" name="Notes" rows="5" placeholder=" "></textarea><label for="pb-notes">Rooms you need, styles you love, references, questions…</label></div>', []),
 ]
 steps_html = "".join(f"""
     <fieldset class="step" data-step="{i}" data-need="{','.join(need)}">
       <legend><span class="step-no">{i+1:02d}<i>/ {len(STEPS):02d}</i></span>{t}</legend>
       {c}
     </fieldset>""" for i, (t, c, need) in enumerate(STEPS))
-builder = f"""{page_hero("Dream <em>Builder</em>", "2-minute questionnaire", "ryst-day-back", "RYST House beach house in Cheyyur",
-   "Give life to your dream. Tell us your taste and preferences before we meet.", crumbs=[("Dream Builder", "/dream-builder/")])}
+brief = f"""{page_hero("Start a <em>project</em>", "Project brief · 2 minutes", "ryst-day-back", "RYST House beach house in Cheyyur",
+   "Tell us what you're planning, from design only to turnkey design and build. Our team will get back to you to plan the next step.", crumbs=[("Start a project", "/start-a-project/")])}
 <section class="sec">
   <div class="wrap narrow">
-    <form class="form wizard" id="builder-form" data-subject="Dream Builder questionnaire" novalidate>
+    <form class="form wizard" id="builder-form" data-subject="Project brief from design.dreamour.in" novalidate>
       <div class="w-progress" aria-hidden="true"><i></i></div>
       {steps_html}
       <div class="w-nav">
@@ -698,19 +717,27 @@ builder = f"""{page_hero("Dream <em>Builder</em>", "2-minute questionnaire", "ry
       <p class="f-consent">Your details go straight to us on WhatsApp or email; this website doesn't store them. We use them only to reply to you and discuss your project, as explained in our <a href="/home/privacy-policy/">Privacy Policy</a>.</p>
       <p class="f-note" role="status" aria-live="polite"></p>
     </form>
+    <p class="brief-alt">Prefer to talk? Call <a href="tel:{PHONE_TEL}">{PHONE}</a> or <a href="/contact-us/">send a quick message</a>.</p>
   </div>
 </section>
 """
-write("/dream-builder/", layout("/dream-builder/", "Dream Builder – Tell Us Your Design Taste | Dreamour Design",
-     "Take Dreamour Design's 2-minute Dream Builder questionnaire: what you're building, your style, preferred shapes and the balance of function and aesthetics.",
-     builder, image="ryst-day-back", preload="ryst-day-back", schema=crumbs_ld([("Home", "/"), ("Dream Builder", "/dream-builder/")])))
+write("/start-a-project/", layout("/start-a-project/", "Start a Project – Design & Build Brief | Dreamour Design",
+     "Planning a home, interiors or a building in Tamil Nadu? Share your scope, site, budget and timeline in our 2-minute brief, from design only to turnkey design and build.",
+     brief, image="ryst-day-back", preload="ryst-day-back", schema=crumbs_ld([("Home", "/"), ("Start a project", "/start-a-project/")])))
+
+# The old /dream-builder/ address (from the WordPress site) forwards to the brief.
+write("/dream-builder/", f"""<!DOCTYPE html>
+<html lang="en-IN"><head><meta charset="UTF-8"><title>Start a project | Dreamour Design</title>
+<meta name="robots" content="noindex, follow"><link rel="canonical" href="{SITE}/start-a-project/">
+<meta http-equiv="refresh" content="0; url=/start-a-project/"></head>
+<body><p><a href="/start-a-project/">Continue to Start a project</a></p></body></html>
+""")
 
 # ================================================================== LEGAL
 LEGAL = os.path.join(ROOT, "_build", "legal")
 for slug, title, desc in [
     ("terms-conditions", "Terms &amp; Conditions", "Terms and conditions for using the Dreamour Design website and services."),
     ("home/privacy-policy", "Privacy Policy", "How Dreamour Design collects and uses information when you visit design.dreamour.in."),
-    ("return-and-cancellation", "Return &amp; Cancellation Policy", "Return, refund and cancellation policy for Dreamour Design services and products."),
     ("cookie-policy", "Cookie Policy", "How design.dreamour.in uses cookies and similar technologies: none of its own, and third-party ones only when you choose."),
 ]:
     with open(os.path.join(LEGAL, slug.replace("/", "_") + ".html"), encoding="utf-8") as f:
@@ -734,8 +761,8 @@ write("/404.html", layout("/404.html", "Page not found | Dreamour Design", "This
 # ================================================================== SITEMAP etc.
 urls = [("/", 1.0, ["ryst-night-front"]), ("/about/", .8, ["rasi-night"]), ("/services/", .9, [s["img"] for s in SERVICES]),
         ("/works/", .9, ["mass-farm"])] + [(f"/works/{p['slug']}/", .8, [n for n, _ in p["gallery"]]) for p in PROJECTS] + \
-       [("/contact-us/", .8, ["h-house"]), ("/dream-builder/", .7, []), ("/terms-conditions/", .2, []),
-        ("/home/privacy-policy/", .2, []), ("/return-and-cancellation/", .2, []), ("/cookie-policy/", .2, [])]
+       [("/contact-us/", .8, ["h-house"]), ("/start-a-project/", .7, []), ("/terms-conditions/", .2, []),
+        ("/home/privacy-policy/", .2, []), ("/cookie-policy/", .2, [])]
 sm = ['<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">']
 for u, pr, imgs in urls:
