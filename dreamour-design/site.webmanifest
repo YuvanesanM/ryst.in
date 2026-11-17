@@ -1,0 +1,15 @@
+{
+  "name": "Dreamour Design",
+  "short_name": "Dreamour",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#141216",
+  "theme_color": "#141216",
+  "icons": [
+    {
+      "src": "/assets/img/logo-dd.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
