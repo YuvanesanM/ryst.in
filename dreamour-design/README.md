@@ -15,11 +15,11 @@ It's a fast static site: plain HTML, CSS and JavaScript with no framework, datab
 | `/works/<project>/` | One page per project, with a photo gallery and lightbox |
 | `/contact-us/` | Address, phone, email, map, enquiry form |
 | `/dream-builder/` | Step-by-step design questionnaire |
-| `/terms-conditions/`, `/home/privacy-policy/`, `/return-and-cancellation/` | Policies |
+| `/terms-conditions/`, `/home/privacy-policy/`, `/cookie-policy/`, `/return-and-cancellation/` | Policies |
 
 The old WordPress URLs are kept, so existing links and Google results still work.
 
-Forms don't need a server. Visitors send their answers by **WhatsApp** (+91 96001 25599) or **email** (info@design.dreamour.in).
+Forms don't need a server. Visitors send their answers by **WhatsApp** (+91 96001 25599) or **email** (info@dreamour.in).
 
 ## SEO
 
@@ -50,5 +50,10 @@ Commit and push to `main`. GitHub Pages republishes within a minute or two.
 1. **GitHub:** go to repo → Settings → Pages → *Build and deployment*. Set Source to **Deploy from a branch**, Branch to **main**, and folder to **/ (root)**. Under *Custom domain*, enter `design.dreamour.in` (the `CNAME` file already contains it). Once the certificate is issued, tick **Enforce HTTPS**.
 2. **DNS** (wherever dreamour.in is managed): replace the existing record for `design` with
    `CNAME  design  →  yuvanesanm.github.io`
-3. **Email warning:** if `info@design.dreamour.in` receives mail through MX records on the `design` subdomain, you can't put a CNAME there. Check your DNS first. If MX records exist on `design`, keep them and use these **A records** instead of the CNAME:
-   `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+3. Email (info@dreamour.in) runs on the main `dreamour.in` domain, so changing the `design` record doesn't affect it.
+
+## Privacy & compliance
+
+- No cookies, analytics or trackers. Fonts are self-hosted, and the Google Map loads only when a visitor clicks it.
+- Policies (Terms, Privacy, Cookies, Returns) are in `_build/legal/`. They reference the DPDP Act 2023, the IT Act 2000 and the Consumer Protection Act 2019. When you change one, update `POLICY_DATE` in `_build/build.py`.
+- If you ever add analytics or ads, update the Cookie Policy and add a consent banner first.

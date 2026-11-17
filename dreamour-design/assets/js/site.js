@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   var WA = '919600125599';
-  var EMAIL = 'info@design.dreamour.in';
+  var EMAIL = 'info@dreamour.in';
   var root = document.documentElement;
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (s, c) { return (c || document).querySelector(s); };
@@ -75,6 +75,8 @@
       if (box.bottom < -100 || box.top > vh + 100) return;
       var speed = parseFloat(el.getAttribute('data-parallax')) || 0.2;
       var off = (box.top + box.height / 2 - vh / 2) * -speed;
+      var extra = Math.max((el.offsetHeight - box.height) / 2, 0);
+      off = Math.max(-extra, Math.min(extra, off));
       el.style.transform = 'translate3d(0,' + off.toFixed(1) + 'px,0)';
     });
     fills.forEach(function (el) {
@@ -193,6 +195,18 @@
       sx = null;
     });
   }
+
+  /* ---------- click-to-load map (no Google cookies until asked) ---------- */
+  $$('[data-map]').forEach(function (box) {
+    var b = $('.map-load', box);
+    if (b) b.addEventListener('click', function () {
+      var f = document.createElement('iframe');
+      f.src = box.getAttribute('data-map');
+      f.title = 'Map: Dreamour Design studio, Kilpauk, Chennai';
+      f.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+      box.replaceChildren(f);
+    });
+  });
 
   /* ---------- forms: send by WhatsApp or email ---------- */
   function collect(form) {

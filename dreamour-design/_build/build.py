@@ -18,16 +18,18 @@ BRAND = "Dreamour Design"
 PHONE = "+91 96001 25599"
 PHONE_TEL = "+919600125599"
 WA = "919600125599"
-EMAIL = "info@design.dreamour.in"
+EMAIL = "info@dreamour.in"
 STREET = "271/182, Ankur Manor, P.H Road, Kilpauk"
 CITY = "Chennai"
 PIN = "600010"
 ADDRESS = f"{STREET}, {CITY} – {PIN}, India"
 MAPS = "https://www.google.com/maps/search/?api=1&query=Ankur+Manor+P.H+Road+Kilpauk+Chennai+600010"
 MAP_EMBED = "https://www.google.com/maps?q=Ankur+Manor,+P.H+Road,+Kilpauk,+Chennai+600010&output=embed"
-IG = "https://www.instagram.com/design.dreamour.in/"
+IG = "https://www.instagram.com/dreamour.design/"
+IG_HANDLE = "@dreamour.design"
 FB = "https://www.facebook.com/design.dreamour.in/"
 TODAY = date.today().isoformat()
+POLICY_DATE = "17 November 2026"
 
 def esc(s): return H.escape(str(s), quote=True)
 
@@ -150,16 +152,18 @@ ORG = {
      "inLanguage": "en-IN", "publisher": {"@id": f"{SITE}/#business"}},
     {"@type": ["ProfessionalService", "HomeAndConstructionBusiness"], "@id": f"{SITE}/#business",
      "name": BRAND, "legalName": "Dreamour Multiventures", "slogan": "Your Dream Our Design",
-     "description": "Architecture, interior, landscape and furniture design studio in Chennai, founded by architect Ramyaa Yuvanesan.",
+     "description": "Architecture, interior, landscape and furniture design studio in Chennai. Dreamour Multiventures was registered in 2023 by architect Ramyaa Yuvanesan, whose practice dates back to 2015.",
      "url": f"{SITE}/", "logo": f"{SITE}/assets/img/logo-dd.png", "image": og("ryst-night-front"),
      "telephone": PHONE_TEL, "email": EMAIL, "priceRange": "₹₹",
-     "founder": {"@type": "Person", "name": "Ramyaa Yuvanesan", "jobTitle": "Architect"},
+     "foundingDate": "2023", "founder": {"@id": f"{SITE}/#architect"},
      "address": {"@type": "PostalAddress", "streetAddress": STREET, "addressLocality": CITY,
                  "postalCode": PIN, "addressRegion": "Tamil Nadu", "addressCountry": "IN"},
      "areaServed": [{"@type": "City", "name": "Chennai"}, {"@type": "State", "name": "Tamil Nadu"}],
      "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Design services", "itemListElement": [
         {"@type": "Offer", "itemOffered": {"@type": "Service", "name": s["name"], "description": s["short"]}} for s in SERVICES]},
-     "sameAs": [IG, FB]}
+     "sameAs": [IG, FB]},
+    {"@type": "Person", "@id": f"{SITE}/#architect", "name": "Ramyaa Yuvanesan", "jobTitle": "Architect",
+     "worksFor": {"@id": f"{SITE}/#business"}, "url": f"{SITE}/about/"}
   ]}
 
 def ld(obj): return f'\n  <script type="application/ld+json">{json.dumps(obj, ensure_ascii=False)}</script>'
@@ -214,9 +218,9 @@ def layout(path, title, desc, body, image="ryst-night-front", active="", schema=
   <meta name="twitter:title" content="{esc(title)}">
   <meta name="twitter:description" content="{esc(desc)}">
   <meta name="twitter:image" content="{og(image)}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=Josefin+Sans:wght@400;600&display=swap">{pre}
+  <link rel="preload" href="/assets/fonts/cormorant-garamond-normal-1.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/inter-normal-2.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/fonts.css?v={TODAY}">{pre}
   <link rel="stylesheet" href="/assets/css/site.css?v={TODAY}">{schema}
 </head>
 <body class="{'has-hero' if dark_hero else 'no-hero'}">
@@ -273,7 +277,7 @@ def layout(path, title, desc, body, image="ryst-night-front", active="", schema=
     </div>
     <div class="ftr-bottom">
       <p>© <span class="yr">{date.today().year}</span> Dreamour Multiventures. All rights reserved.</p>
-      <nav aria-label="Legal"><a href="/terms-conditions/">Terms &amp; Conditions</a><a href="/home/privacy-policy/">Privacy Policy</a><a href="/return-and-cancellation/">Return &amp; Cancellation</a></nav>
+      <nav aria-label="Legal"><a href="/terms-conditions/">Terms</a><a href="/home/privacy-policy/">Privacy</a><a href="/cookie-policy/">Cookies</a><a href="/return-and-cancellation/">Returns &amp; Cancellation</a></nav>
     </div>
   </div>
 </footer>
@@ -445,11 +449,20 @@ about = f"""{page_hero("The <em>studio</em>", "About Dreamour", "rasi-night", "R
   <div class="wrap split">
     <div class="split-l"><p class="kicker">Our story</p><h2 class="display">Designing to <em>enhance everyday living</em></h2></div>
     <div class="split-r prose-lg">
-      <p class="dropcap">Welcome to Dreamour Multiventures, where creativity meets functionality. Established by the visionary architect <strong>Ramyaa Yuvanesan</strong>, we began our journey as a premier provider of architectural solutions. Over the years, our passion for design and innovation has led us to expand into diverse fields, creating a unique blend of expertise and excellence.</p>
+      <p class="dropcap">Welcome to Dreamour Multiventures, where creativity meets functionality. Long before the firm had a name, architect <strong>Ramyaa Yuvanesan</strong> was designing homes, apartments, interiors and public landscapes across Chennai and Tamil Nadu, with built work dating back to 2015.</p>
+      <p>In 2023 that practice became a registered firm, <strong>Dreamour Multiventures</strong>. It continues as a premier provider of architectural solutions, and our passion for design and innovation has since led us into diverse fields, creating a unique blend of expertise and excellence.</p>
       <p>At our core, we remain dedicated to transforming spaces through exceptional architectural, interior design and landscape services. Our mission is to enhance the quality of life by crafting environments that are both beautiful and functional. We believe in smart, sustainable design, integrating elements like light, space, nature, colour and materials to create harmonious and inspiring spaces.</p>
     </div>
   </div>
-  <div class="wrap">{STATS}</div>
+  <div class="wrap">
+    <ol class="timeline reveal">
+      <li><span>2015</span><p>First built works by architect Ramyaa Yuvanesan: H-House and the Tuticorin statue landscape.</p></li>
+      <li><span>2015–22</span><p>Homes, apartments, interiors, a community hall and public landscapes across Chennai and Tamil Nadu.</p></li>
+      <li><span>2023</span><p>The practice is registered as Dreamour Multiventures.</p></li>
+      <li><span>Today</span><p>Architecture, interiors, landscape and product design, alongside premium cookware and RYST Toys.</p></li>
+    </ol>
+    {STATS}
+  </div>
 </section>
 
 <section class="band band-short">
@@ -525,13 +538,14 @@ write("/services/", layout("/services/", "Architecture & Interior Design Service
 # ================================================================== WORKS
 counts = {c: sum(1 for p in PROJECTS if p["cat"] == c) for c in CATS}
 works = f"""{page_hero("Our <em>works</em>", "Portfolio", "mass-farm", "Landscape design for a 20-acre estate in Gummidipoondi",
-   "Homes, interiors and landscapes across Chennai and Tamil Nadu.", crumbs=[("Works", "/works/")])}
+   "Homes, interiors and landscapes across Chennai and Tamil Nadu, designed by architect Ramyaa Yuvanesan.", crumbs=[("Works", "/works/")])}
 <section class="sec">
   <div class="wrap">
     <div class="filters" role="group" aria-label="Filter projects">
       <button class="chip on" data-f="all" aria-pressed="true">All <sup>{len(PROJECTS)}</sup></button>
       {''.join(f'<button class="chip" data-f="{c}" aria-pressed="false">{n} <sup>{counts[c]}</sup></button>' for c, n in CATS.items())}
     </div>
+    <p class="credit-note">Projects completed before 2023 were designed by architect Ramyaa Yuvanesan, before her practice was registered as Dreamour Multiventures.</p>
     <div class="pgrid">{''.join(proj_card(p, i) for i, p in enumerate(PROJECTS))}</div>
   </div>
 </section>
@@ -558,7 +572,7 @@ for idx, p in enumerate(PROJECTS):
       <div><dt>Location</dt><dd>{esc(p['loc'])}</dd></div>
       <div><dt>Area</dt><dd>{p['area']}</dd></div>
       <div><dt>Year</dt><dd>{p['year']}</dd></div>
-      <div><dt>Discipline</dt><dd>{CATS[p['cat']]}</dd></div>
+      <div><dt>Architect</dt><dd>Ramyaa Yuvanesan</dd></div>
     </dl>
     <div class="proj-intro">
       <p class="lead-serif reveal">{esc(p['desc'])}</p>
@@ -583,7 +597,7 @@ for idx, p in enumerate(PROJECTS):
 """
     cw = {"@context": "https://schema.org", "@type": "CreativeWork", "name": p["name"], "description": p["desc"],
           "genre": CATS[p["cat"]], "dateCreated": p["year"], "url": f"{SITE}/works/{p['slug']}/",
-          "image": [og(n) for n, _ in p["gallery"]], "creator": {"@id": f"{SITE}/#business"},
+          "image": [og(n) for n, _ in p["gallery"]], "creator": {"@id": f"{SITE}/#architect"},
           "locationCreated": {"@type": "Place", "name": p["loc"]}}
     write(f"/works/{p['slug']}/", layout(f"/works/{p['slug']}/",
         f"{p['name']}, {p['loc'].split(',')[0]} | Dreamour Design",
@@ -600,7 +614,7 @@ contact = f"""{page_hero("Let's <em>talk</em>", "Contact", "h-house", "H-House r
       <div class="c-item reveal"><span class="c-ic">{I['pin']}</span><div><h2>Studio</h2><address>{STREET},<br>{CITY} – {PIN}, India</address><a class="u-link" href="{MAPS}" target="_blank" rel="noopener">Get directions {I['arrow']}</a></div></div>
       <div class="c-item reveal"><span class="c-ic">{I['phone']}</span><div><h2>Phone</h2><p><a href="tel:{PHONE_TEL}">{PHONE}</a></p><a class="u-link" href="https://wa.me/{WA}" target="_blank" rel="noopener">Chat on WhatsApp {I['arrow']}</a></div></div>
       <div class="c-item reveal"><span class="c-ic">{I['mail']}</span><div><h2>Email</h2><p><a href="mailto:{EMAIL}">{EMAIL}</a></p></div></div>
-      <div class="c-item reveal"><span class="c-ic">{I['ig']}</span><div><h2>Follow</h2><p><a href="{IG}" target="_blank" rel="noopener">@design.dreamour.in</a></p></div></div>
+      <div class="c-item reveal"><span class="c-ic">{I['ig']}</span><div><h2>Follow</h2><p><a href="{IG}" target="_blank" rel="noopener">{IG_HANDLE}</a></p></div></div>
     </div>
     <form class="form" id="contact-form" data-subject="Enquiry from design.dreamour.in" novalidate>
       <h2 class="display-sm">Leave us a <em>message</em></h2>
@@ -615,10 +629,20 @@ contact = f"""{page_hero("Let's <em>talk</em>", "Contact", "h-house", "H-House r
         <button class="btn btn-dark" type="submit" value="whatsapp">{I['wa']} Send on WhatsApp</button>
         <button class="btn btn-line" type="submit" value="email">{I['mail']} Send by email</button>
       </div>
+      <p class="f-consent">Your details go straight to us on WhatsApp or email; this website doesn't store them. We use them only to reply to you and discuss your project, as explained in our <a href="/home/privacy-policy/">Privacy Policy</a>.</p>
       <p class="f-note" role="status" aria-live="polite"></p>
     </form>
   </div>
-  <div class="wrap"><iframe class="map" title="Map: Dreamour Design studio, Kilpauk, Chennai" src="{MAP_EMBED}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+  <div class="wrap">
+    <div class="map" data-map="{MAP_EMBED}">
+      <div class="map-ph">
+        <p class="kicker c">Studio location</p>
+        <p class="map-addr">{STREET}, {CITY} – {PIN}</p>
+        <button class="btn btn-dark map-load" type="button">Show Google Map</button>
+        <p class="map-note">Loading the map connects to Google, which may set cookies. <a href="/cookie-policy/">Cookie policy</a> · <a href="{MAPS}" target="_blank" rel="noopener">Open in Google Maps</a></p>
+      </div>
+    </div>
+  </div>
 </section>
 """
 contact_ld = {"@context": "https://schema.org", "@type": "ContactPage", "url": f"{SITE}/contact-us/", "about": {"@id": f"{SITE}/#business"}}
@@ -671,6 +695,7 @@ builder = f"""{page_hero("Dream <em>Builder</em>", "2-minute questionnaire", "ry
         <button class="btn btn-dark" type="submit" value="whatsapp">{I['wa']} Send on WhatsApp</button>
         <button class="btn btn-line" type="submit" value="email">{I['mail']} Send by email</button>
       </div>
+      <p class="f-consent">Your details go straight to us on WhatsApp or email; this website doesn't store them. We use them only to reply to you and discuss your project, as explained in our <a href="/home/privacy-policy/">Privacy Policy</a>.</p>
       <p class="f-note" role="status" aria-live="polite"></p>
     </form>
   </div>
@@ -685,11 +710,12 @@ LEGAL = os.path.join(ROOT, "_build", "legal")
 for slug, title, desc in [
     ("terms-conditions", "Terms &amp; Conditions", "Terms and conditions for using the Dreamour Design website and services."),
     ("home/privacy-policy", "Privacy Policy", "How Dreamour Design collects and uses information when you visit design.dreamour.in."),
-    ("return-and-cancellation", "Return &amp; Cancellation Policy", "Return and cancellation policy for Dreamour Design architectural services and products."),
+    ("return-and-cancellation", "Return &amp; Cancellation Policy", "Return, refund and cancellation policy for Dreamour Design services and products."),
+    ("cookie-policy", "Cookie Policy", "How design.dreamour.in uses cookies and similar technologies: none of its own, and third-party ones only when you choose."),
 ]:
     with open(os.path.join(LEGAL, slug.replace("/", "_") + ".html"), encoding="utf-8") as f:
         prose = f.read()
-    body = f"""<section class="lhero"><div class="wrap narrow"><nav class="crumbs dark" aria-label="Breadcrumb"><a href="/">Home</a><i>/</i><span aria-current="page">{title}</span></nav><h1 class="display">{title}</h1></div></section>
+    body = f"""<section class="lhero"><div class="wrap narrow"><nav class="crumbs dark" aria-label="Breadcrumb"><a href="/">Home</a><i>/</i><span aria-current="page">{title}</span></nav><h1 class="display">{title}</h1><p class="eff">Effective date: {POLICY_DATE}</p></div></section>
 <section class="sec sec-top0"><div class="wrap narrow prose">{prose}</div></section>"""
     write(f"/{slug}/", layout(f"/{slug}/", f"{H.unescape(title)} | Dreamour Design", desc, body, dark_hero=False))
 
@@ -709,7 +735,7 @@ write("/404.html", layout("/404.html", "Page not found | Dreamour Design", "This
 urls = [("/", 1.0, ["ryst-night-front"]), ("/about/", .8, ["rasi-night"]), ("/services/", .9, [s["img"] for s in SERVICES]),
         ("/works/", .9, ["mass-farm"])] + [(f"/works/{p['slug']}/", .8, [n for n, _ in p["gallery"]]) for p in PROJECTS] + \
        [("/contact-us/", .8, ["h-house"]), ("/dream-builder/", .7, []), ("/terms-conditions/", .2, []),
-        ("/home/privacy-policy/", .2, []), ("/return-and-cancellation/", .2, [])]
+        ("/home/privacy-policy/", .2, []), ("/return-and-cancellation/", .2, []), ("/cookie-policy/", .2, [])]
 sm = ['<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">']
 for u, pr, imgs in urls:
